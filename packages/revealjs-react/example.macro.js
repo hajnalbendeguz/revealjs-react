@@ -4,11 +4,6 @@ const prettier = require('prettier');
 
 const packageName = '@gregcello/revealjs-react';
 
-function getExampleSource(example) {
-  const { code } = generate(example, {});
-  return prettier.format(code);
-}
-
 function addNeededImports(state, babel) {
   const t = babel.types;
   const importsToAdd = ['Example'];
@@ -44,6 +39,59 @@ function addNeededImports(state, babel) {
     );
   }
 }
+function cloneExistingAttributes(attributes) {
+  return attributes.reduce((mem, attr) => {
+    mem.push(attr.node);
+    return mem;
+  }, []);
+}
+
+function getExampleSource(p) {
+  const generatedText = generate(p.parentPath.node, {}).code;
+  const formattedText = prettier
+    .format(generatedText, {
+      parser(text, { 'babel-ts': babel }) {
+        const ast = babel(`function Thing() {
+  return (
+    ${text}
+  );
+}`);
+        return ast;
+      },
+    })
+    .replace(
+      `function Thing() {
+  return (
+`,
+      '',
+    )
+    .replace(
+      `
+  );
+}`,
+      '',
+    )
+    .replace(
+      `<Example language="typescript">
+    `,
+      '',
+    )
+    .replace(`</Example>`, '')
+    .replace(/\n {2}/g, '\n')
+    .replace(/^ {2}/g, '');
+  return formattedText;
+}
+
+function addSourceString(t, state, sourceCode, sourceName) {
+  state.file.ast.program.body.unshift(
+    t.variableDeclaration('const', [
+      t.variableDeclarator(
+        t.identifier(sourceName),
+        t.stringLiteral(sourceCode),
+      ),
+    ]),
+  );
+}
 
 function ExampleTransform({ references, state, babel }) {
   const t = babel.types;
@@ -51,16 +99,21 @@ function ExampleTransform({ references, state, babel }) {
   // assert we have the @gregcello/revealjs-react Example component imported
   addNeededImports(state, babel);
 
+  let sourceIdx = 1;
+
   Example.forEach((referencePath) => {
     if (referencePath.parentPath.type === 'JSXOpeningElement') {
       const p = referencePath.parentPath;
-      const source = t.jsxAttribute(
-        'source',
-        getExampleSource(referencePath.children),
+      const sourceName = `__$$example_src_code$$__${sourceIdx++}`;
+      const sourceCode = getExampleSource(p);
+      const source = t.jSXAttribute(
+        t.jSXIdentifier('source'),
+        t.jSXExpressionContainer(t.identifier(sourceName)),
       );
-      const newNode = t.jsxOpeningElement(
-        'Example',
-        [...p.attributes, source],
+      addSourceString(t, state, sourceCode, sourceName);
+      const newNode = t.jSXOpeningElement(
+        t.jSXIdentifier('Example'),
+        cloneExistingAttributes(p.get('attributes')).concat([source]),
         false,
       );
       referencePath.parentPath.replaceWith(newNode);
