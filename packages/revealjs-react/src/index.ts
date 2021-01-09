@@ -4,7 +4,7 @@
  *
  * Copyright (C) 2020 Blake Nedved, https://blakeanedved.github.io/
  */
-import { 
+import {
   H1,
   H2,
   H3,
@@ -39,6 +39,8 @@ import type {
   SpanProps,
   UlProps,
 } from './components/SimpleComponents';
+import Example from './components/Example';
+import type { ExampleProps } from './components/Example';
 import Audio from './components/Audio';
 import type { AudioProps } from './components/Audio';
 import Code from './components/Code';
@@ -57,7 +59,7 @@ import Slide from './components/Slide';
 import type { SlideProps } from './components/Slide';
 import Video from './components/Video';
 import type { VideoProps } from './components/Video';
-import { RevealContext } from "./components/RevealProvider";
+import { RevealContext } from './components/RevealProvider';
 
 // hooks
 import useReveal from './hooks/useReveal';
@@ -96,6 +98,7 @@ export {
   BlockQuote,
   Code,
   Div,
+  Example,
   FigCaption,
   Figure,
   Footer,
@@ -140,6 +143,7 @@ export type {
   BlockQuoteProps,
   CodeProps,
   DivProps,
+  ExampleProps,
   FigCaptionProps,
   FigureProps,
   FooterProps,
