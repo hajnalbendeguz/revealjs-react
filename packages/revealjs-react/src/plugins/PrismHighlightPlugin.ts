@@ -1,9 +1,9 @@
 import Prism from 'prismjs';
-import Reveal, {
-  MightBeRevealPlugin,
-  RevealPlugin,
-  RevealPluginDefinition,
-} from '../../types/reveal.js';
+// @ts-ignore
+import config from 'prismjs/components.js';
+// @ts-ignore
+import getLoader from 'prismjs/dependencies';
+import { RevealPluginDefinition } from '../../types/reveal.js';
 import {
   PrismLanguages,
   PrismPlugins,
@@ -13,12 +13,35 @@ import './PrismHighlightPlugin/PrismHighlight.css';
 
 window.Prism = Prism;
 
-export interface PrismOptions {
+export interface PrismOptions<
+  CustomLanguages extends string = PrismLanguages,
+  CustomPlugins extends string = PrismPlugins,
+  CustomThemes extends string = PrismThemes
+> {
   prism?: {
-    languages?: PrismLanguages[];
-    plugins?: PrismPlugins[];
-    theme?: PrismThemes;
+    languages?: CustomLanguages[];
+    plugins?: CustomPlugins[];
+    theme?: CustomThemes;
   };
+}
+export type { PrismLanguages, PrismPlugins, PrismThemes };
+
+export type CustomPrismHighlightPlugin<
+  CustomLanguages extends string = PrismLanguages,
+  CustomPlugins extends string = PrismPlugins,
+  CustomThemes extends string = PrismThemes
+> = () => RevealPluginDefinition<
+  PrismOptions<CustomLanguages, CustomPlugins, CustomThemes>
+>;
+
+export interface ActualPrism {
+  languages: Prism.Languages;
+}
+
+export function addCustomPrismLanguage(
+  languageDef: (prism: ActualPrism) => void,
+) {
+  languageDef(Prism);
 }
 
 /*!
@@ -34,31 +57,8 @@ const PrismHighlightPlugin: RevealPluginDefinition<PrismOptions> = {
    * Note that this can be called multiple times if
    * there are multiple presentations on one page.
    */
-  init(reveal: Reveal<(MightBeRevealPlugin | RevealPlugin<PrismOptions>)[]>) {
-    const {
-      prism: { languages = [], plugins = [], theme = 'default' } = {
-        languages: [],
-        plugins: [],
-        theme: 'default',
-      },
-    } = reveal.getConfig();
-    languages.forEach((language) => {
-      require(`prismjs/components/prism-${language}.min`);
-    });
-    plugins.forEach((plugin) => {
-      try {
-        require(`prismjs/plugins/${plugin}/prism-${plugin}.css`);
-      } catch (_) {
-        // ignore missing css
-      }
-      require(`prismjs/plugins/${plugin}/prism-${plugin}.min`);
-    });
-    if (theme === 'default') {
-      require(`prismjs/themes/prism.css`);
-    } else {
-      require(`prismjs/themes/prism-${theme}.css`);
-    }
-    Prism.highlightAll();
+  init() {
+    setTimeout(() => Prism.highlightAll(), 100);
   },
 };
 

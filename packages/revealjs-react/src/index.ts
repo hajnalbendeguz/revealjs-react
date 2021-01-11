@@ -81,12 +81,20 @@ const NotesPlugin: RevealPlugin = UntypedNotesPlugin;
 const SearchPlugin: RevealPlugin = UntypedSearchPlugin;
 const ZoomPlugin: RevealPlugin = UntypedZoomPlugin;
 import PrismHighlightPlugin, {
+  addCustomPrismLanguage,
+} from './plugins/PrismHighlightPlugin';
+import type {
+  CustomPrismHighlightPlugin,
   PrismOptions,
+  PrismLanguages,
+  PrismPlugins,
+  PrismThemes,
 } from './plugins/PrismHighlightPlugin';
 
 // types for reveal.js
 import type {
   RevealPlugin,
+  RevealPluginDefinition,
   RevealPluginList,
   RevealConfig,
   RevealNavigate,
@@ -129,6 +137,7 @@ export {
   Span,
   Ul,
   Video,
+  addCustomPrismLanguage,
   PrismHighlightPlugin,
   HighlightPlugin,
   MathPlugin,
@@ -139,7 +148,12 @@ export {
 };
 
 export type {
+  PrismLanguages,
+  PrismPlugins,
+  PrismThemes,
+  CustomPrismHighlightPlugin,
   RevealPlugin,
+  RevealPluginDefinition,
   RevealPlugins,
   RevealPluginList,
   Reveal,
