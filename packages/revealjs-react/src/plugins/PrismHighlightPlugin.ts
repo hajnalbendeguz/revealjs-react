@@ -34,6 +34,16 @@ export type CustomPrismHighlightPlugin<
   PrismOptions<CustomLanguages, CustomPlugins, CustomThemes>
 >;
 
+export interface ActualPrism {
+  languages: Prism.Languages;
+}
+
+export function addCustomPrismLanguage(
+  languageDef: (prism: ActualPrism) => void,
+) {
+  languageDef(Prism);
+}
+
 /*!
  * reveal.js plugin that adds syntax highlight support using Prism.js.
  */
@@ -56,7 +66,9 @@ const PrismHighlightPlugin: RevealPluginDefinition<PrismOptions> = {
       },
     } = reveal.getConfig();
     languages.forEach((language) => {
-      require(`prismjs/components/prism-${language}.min`);
+      if (!Prism.languages[language]) {
+        require(`prismjs/components/prism-${language}.min`);
+      }
     });
     plugins.forEach((plugin) => {
       try {
@@ -64,7 +76,9 @@ const PrismHighlightPlugin: RevealPluginDefinition<PrismOptions> = {
       } catch (_) {
         // ignore missing css
       }
-      require(`prismjs/plugins/${plugin}/prism-${plugin}.min`);
+      if (!Prism.plugins[plugin]) {
+        require(`prismjs/plugins/${plugin}/prism-${plugin}.min`);
+      }
     });
     if (theme === 'default') {
       require(`prismjs/themes/prism.css`);

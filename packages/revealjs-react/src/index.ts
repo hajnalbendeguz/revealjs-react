@@ -81,10 +81,11 @@ const NotesPlugin: RevealPlugin = UntypedNotesPlugin;
 const SearchPlugin: RevealPlugin = UntypedSearchPlugin;
 const ZoomPlugin: RevealPlugin = UntypedZoomPlugin;
 import PrismHighlightPlugin, {
-  CustomPrismHighlightPlugin,
-  PrismOptions,
+  addCustomPrismLanguage,
 } from './plugins/PrismHighlightPlugin';
 import type {
+  CustomPrismHighlightPlugin,
+  PrismOptions,
   PrismLanguages,
   PrismPlugins,
   PrismThemes,
@@ -136,6 +137,7 @@ export {
   Span,
   Ul,
   Video,
+  addCustomPrismLanguage,
   PrismHighlightPlugin,
   HighlightPlugin,
   MathPlugin,
