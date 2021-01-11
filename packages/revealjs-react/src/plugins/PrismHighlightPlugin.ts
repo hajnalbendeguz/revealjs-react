@@ -1,9 +1,9 @@
 import Prism from 'prismjs';
-import Reveal, {
-  MightBeRevealPlugin,
-  RevealPlugin,
-  RevealPluginDefinition,
-} from '../../types/reveal.js';
+// @ts-ignore
+import config from 'prismjs/components.js';
+// @ts-ignore
+import getLoader from 'prismjs/dependencies';
+import { RevealPluginDefinition } from '../../types/reveal.js';
 import {
   PrismLanguages,
   PrismPlugins,
@@ -57,35 +57,8 @@ const PrismHighlightPlugin: RevealPluginDefinition<PrismOptions> = {
    * Note that this can be called multiple times if
    * there are multiple presentations on one page.
    */
-  init(reveal: Reveal<(MightBeRevealPlugin | RevealPlugin<PrismOptions>)[]>) {
-    const {
-      prism: { languages = [], plugins = [], theme = 'default' } = {
-        languages: [],
-        plugins: [],
-        theme: 'default',
-      },
-    } = reveal.getConfig();
-    languages.forEach((language) => {
-      if (!Prism.languages[language]) {
-        require(`prismjs/components/prism-${language}.min`);
-      }
-    });
-    plugins.forEach((plugin) => {
-      try {
-        require(`prismjs/plugins/${plugin}/prism-${plugin}.css`);
-      } catch (_) {
-        // ignore missing css
-      }
-      if (!Prism.plugins[plugin]) {
-        require(`prismjs/plugins/${plugin}/prism-${plugin}.min`);
-      }
-    });
-    if (theme === 'default') {
-      require(`prismjs/themes/prism.css`);
-    } else {
-      require(`prismjs/themes/prism-${theme}.css`);
-    }
-    Prism.highlightAll();
+  init() {
+    setTimeout(() => Prism.highlightAll(), 100);
   },
 };
 

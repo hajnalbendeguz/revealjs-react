@@ -5,60 +5,30 @@ import {
   PrismHighlightPlugin,
   NotesPlugin,
   Code,
-  PrismOptions,
 } from '@gregcello/revealjs-react';
+import Prism from 'prismjs';
 import { Example } from '@gregcello/revealjs-react/example.macro';
 import 'reveal.js/dist/theme/moon.css';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/plugins/line-numbers/prism-line-numbers';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+import 'prismjs/plugins/line-highlight/prism-line-highlight';
+import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 
 const plugins = [PrismHighlightPlugin, NotesPlugin];
-const pluginProps: PrismOptions = {
-  prism: {
-    languages: ['jsx', 'tsx', 'typescript'],
-    theme: 'tomorrow',
-    plugins: ['line-numbers', 'line-highlight'],
-  },
-};
 
 function App() {
   return (
     <div className="App">
-      <RevealJS plugins={plugins} history pluginProps={pluginProps}>
+      <RevealJS plugins={plugins} history>
         <Slide>
           <Example>
-            <Code language="tsx" lineNumbers="16" id="example">
+            <Code language="typescript">
               {{
-                code: `<RevealJS plugins={plugins} history pluginProps={pluginProps}>
-  <Slide>
-    <Example>
-      <Code language="typescript">
-        {{ code: \`
-const f: number = 4;
-console.log(f);
-\`}}
-      </Code>
-    </Example>
-  </Slide>
-  </RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-</RevealJS>
-`,
+                code: `const f: number = 2`,
               }}
             </Code>
           </Example>
