@@ -13,13 +13,26 @@ import './PrismHighlightPlugin/PrismHighlight.css';
 
 window.Prism = Prism;
 
-export interface PrismOptions {
+export interface PrismOptions<
+  CustomLanguages extends string = PrismLanguages,
+  CustomPlugins extends string = PrismPlugins,
+  CustomThemes extends string = PrismThemes
+> {
   prism?: {
-    languages?: PrismLanguages[];
-    plugins?: PrismPlugins[];
-    theme?: PrismThemes;
+    languages?: CustomLanguages[];
+    plugins?: CustomPlugins[];
+    theme?: CustomThemes;
   };
 }
+export type { PrismLanguages, PrismPlugins, PrismThemes };
+
+export type CustomPrismHighlightPlugin<
+  CustomLanguages extends string = PrismLanguages,
+  CustomPlugins extends string = PrismPlugins,
+  CustomThemes extends string = PrismThemes
+> = () => RevealPluginDefinition<
+  PrismOptions<CustomLanguages, CustomPlugins, CustomThemes>
+>;
 
 /*!
  * reveal.js plugin that adds syntax highlight support using Prism.js.
