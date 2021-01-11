@@ -1,3 +1,7 @@
-import HighlightPlugin from 'reveal.js/plugin/highlight/highlight.esm';
+import HighlightPlugin, {
+  HighlightOptions,
+} from 'reveal.js/plugin/highlight/highlight.esm';
+
+export { HighlightOptions };
 
 export default HighlightPlugin;

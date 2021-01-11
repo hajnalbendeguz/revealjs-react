@@ -72,13 +72,11 @@ function getExampleSource(p) {
       '',
     )
     .replace(
-      `<Example language="typescript">
+      `<Example>
     `,
       '',
     )
-    .replace(`</Example>`, '')
-    .replace(/\n {2}/g, '\n')
-    .replace(/^ {2}/g, '');
+    .replace(`</Example>`, '');
   return formattedText;
 }
 

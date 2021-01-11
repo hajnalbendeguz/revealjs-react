@@ -1,5 +1,5 @@
-import { RevealPlugin } from "../../";
+import { RevealPlugin } from '../../';
 
-const MathPlugin: RevealPlugin
+const MathPlugin: RevealPlugin;
 
 export default MathPlugin;

@@ -1,0 +1,9 @@
+code[class*='language-'],
+pre[class*='language-'] {
+  /* use the reveal value, not the prism value */
+  font-size: 0.75em !important;
+}
+
+.reveal pre code {
+  overflow: initial !important;
+}

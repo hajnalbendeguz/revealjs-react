@@ -1,5 +1,5 @@
-import { RevealPlugin } from "../../";
+import { RevealPlugin } from '../../';
 
-const SearchPlugin: RevealPlugin
+const SearchPlugin: RevealPlugin;
 
 export default SearchPlugin;

@@ -1,5 +1,12 @@
-import { RevealPlugin } from "../../";
+import { RevealPlugin } from '../../';
 
-const HighlightPlugin: RevealPlugin
+export interface HighlightOptions {
+  highlight?: {
+    highlightOnLoad?: boolean;
+    escapeHTML?: boolean;
+  };
+}
+
+const HighlightPlugin: RevealPlugin<HighlightOptions>;
 
 export default HighlightPlugin;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MakeProps, getClassNameProps } from './BaseComponent';
 import useReveal from '../hooks/useReveal';
-import Reveal from 'reveal.js';
+import Reveal, { MightBeRevealPlugin } from 'reveal.js';
 
 export type SlideType = string | number | [number, number] | HTMLElement;
 
@@ -11,7 +11,10 @@ export interface LinkProps {
   slide?: SlideType;
 }
 
-function getLinkFromSlide(reveal: Reveal | null, slide: HTMLElement) {
+function getLinkFromSlide(
+  reveal: Reveal<MightBeRevealPlugin[]> | null,
+  slide: HTMLElement,
+) {
   if (!reveal) {
     return '#';
   }
@@ -24,7 +27,7 @@ function getLinkFromSlide(reveal: Reveal | null, slide: HTMLElement) {
 }
 
 function getLink(
-  reveal: Reveal | null,
+  reveal: Reveal<MightBeRevealPlugin[]> | null,
   href?: string,
   slide?: SlideType,
 ): string | ((e: React.MouseEvent) => void) {
