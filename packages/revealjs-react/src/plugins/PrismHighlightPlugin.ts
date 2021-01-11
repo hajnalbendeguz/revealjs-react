@@ -1,25 +1,12 @@
 // @ts-ignore
-import Prism from 'prismjs/components/prism-core';
-// @ts-ignore
-import config from 'prismjs/components.js';
-// @ts-ignore
-import getLoader from 'prismjs/dependencies';
 import { RevealPluginDefinition } from '../../types/reveal.js';
+import type Prism from 'prismjs';
 import {
   PrismLanguages,
   PrismPlugins,
   PrismThemes,
 } from './PrismHighlightPlugin/types';
 import './PrismHighlightPlugin/PrismHighlight.css';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-tsx';
-import 'prismjs/components/prism-typescript';
-
-// @ts-ignore
-window.Prism = Prism;
 
 export interface PrismOptions<
   CustomLanguages extends string = PrismLanguages,
@@ -49,7 +36,7 @@ export interface ActualPrism {
 export function addCustomPrismLanguage(
   languageDef: (prism: ActualPrism) => void,
 ) {
-  languageDef(Prism);
+  languageDef((window as any).Prism);
 }
 
 /*!
@@ -66,7 +53,7 @@ const PrismHighlightPlugin: RevealPluginDefinition<PrismOptions> = {
    * there are multiple presentations on one page.
    */
   init() {
-    setTimeout(() => Prism.highlightAll(), 100);
+    setTimeout(() => (window as any).Prism.highlightAll(), 100);
   },
 };
 
