@@ -2,24 +2,64 @@ import './App.css';
 import {
   RevealJS,
   Slide,
-  HighlightPlugin,
+  PrismHighlightPlugin,
   NotesPlugin,
   Code,
+  PrismOptions,
 } from '@gregcello/revealjs-react';
 import { Example } from '@gregcello/revealjs-react/example.macro';
 import 'reveal.js/dist/theme/moon.css';
-import 'reveal.js/plugin/highlight/monokai.css';
 
-const plugins = [HighlightPlugin, NotesPlugin];
+const plugins = [PrismHighlightPlugin, NotesPlugin];
+const pluginProps: PrismOptions = {
+  prism: {
+    languages: ['jsx', 'tsx', 'typescript'],
+    theme: 'tomorrow',
+    plugins: ['line-numbers', 'line-highlight'],
+  },
+};
 
 function App() {
   return (
     <div className="App">
-      <RevealJS plugins={plugins} history>
+      <RevealJS plugins={plugins} history pluginProps={pluginProps}>
         <Slide>
-          <Example language="typescript">
-            <Code language="typescript">
-              {{ code: 'const f: number = 2;' }}
+          <Example>
+            <Code language="tsx" lineNumbers="16" id="example">
+              {{
+                code: `<RevealJS plugins={plugins} history pluginProps={pluginProps}>
+  <Slide>
+    <Example>
+      <Code language="typescript">
+        {{ code: \`
+const f: number = 4;
+console.log(f);
+\`}}
+      </Code>
+    </Example>
+  </Slide>
+  </RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+</RevealJS>
+`,
+              }}
             </Code>
           </Example>
         </Slide>

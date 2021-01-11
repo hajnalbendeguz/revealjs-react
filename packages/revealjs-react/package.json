@@ -1,6 +1,6 @@
 {
   "name": "@gregcello/revealjs-react",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "A React wrapper for the RevealJS Presentation Library.",
   "keywords": [
     "React",
@@ -29,6 +29,7 @@
     "@babel/generator": "^7.12.0",
     "babel-plugin-macros": "^3.0.0",
     "prettier": "^2.2.0",
+    "prismjs": "^1.23.0",
     "react": "^16.0.0 || ^17.0.0",
     "react-dom": "^16.0.0 || ^17.0.0",
     "reveal.js": "^4.0.2"

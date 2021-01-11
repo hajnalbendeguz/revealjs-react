@@ -1,5 +1,5 @@
-import { RevealPlugin } from "../../";
+import { RevealPlugin } from '../../';
 
-const ZoomPlugin: RevealPlugin
+const ZoomPlugin: RevealPlugin;
 
 export default ZoomPlugin;

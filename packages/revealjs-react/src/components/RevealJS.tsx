@@ -1,10 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import Reveal, { RevealPlugin } from 'reveal.js';
+import Reveal from 'reveal.js';
+import {
+  ExtractPluginExtraConfig,
+  RevealConfig,
+  RevealPlugin,
+  MightBeRevealPlugin,
+} from '../../types/reveal.js/index';
 
 // Styles
 import 'reveal.js/dist/reveal.css';
 import { BackgroundRepeat, TransitionAtoms, TransitionSpeed } from '../types';
-import RevealProvider, { defaultContextValue, RevealContextType } from './RevealProvider';
+import RevealProvider, {
+  defaultContextValue,
+  RevealContextType,
+} from './RevealProvider';
 
 const defaultAutoAnimateStyles = [
   'opacity',
@@ -20,9 +29,10 @@ const defaultAutoAnimateStyles = [
   'outline',
   'outline-offset',
 ];
-export interface RevealJSProps {
+export interface RevealJSProps<Plugins extends MightBeRevealPlugin[]> {
   children: React.ReactNode;
-  plugins?: RevealPlugin[];
+  plugins?: Plugins;
+  pluginProps?: ExtractPluginExtraConfig<Plugins>;
 
   controls?: boolean;
   controlsTutorial?: boolean;
@@ -103,13 +113,18 @@ export interface RevealJSProps {
   minScale?: number;
   maxScale?: number;
 
-  onDeckReady?: (deck: Reveal) => void;
+  onDeckReady?: (deck: Reveal<Plugins>) => void;
 }
 
-export default function RevealJS({
+const noPlugins: MightBeRevealPlugin[] = [];
+
+export default function RevealJS<
+  Extras,
+  Plugins extends RevealPlugin<Extras>[]
+>({
   children,
 
-  plugins = [],
+  plugins = noPlugins as Plugins,
 
   // Display presentation control arrows
   controls = true,
@@ -385,151 +400,162 @@ export default function RevealJS({
 
   // a callback to access the deck when it is ready for interaction
   onDeckReady,
-}: RevealJSProps) {
-  const [revealContext, setContextValue] = useState<RevealContextType>(defaultContextValue);
+  pluginProps,
+}: RevealJSProps<Plugins>) {
+  const [revealContext, setContextValue] = useState<RevealContextType<Plugins>>(
+    defaultContextValue,
+  );
   const revealRef = useRef<HTMLDivElement>(null);
-  const revealDeck: React.MutableRefObject<Reveal | null> = useRef(null);
-  const options = useMemo(() => ({
-    plugins,
+  const revealDeck: React.MutableRefObject<Reveal<Plugins> | null> = useRef(
+    null,
+  );
+  const options: RevealConfig<Plugins> = useMemo(
+    () =>
+      ({
+        plugins,
 
-    controls,
-    controlsTutorial,
-    controlsLayout,
-    controlsBackArrows,
-    progress,
-    slideNumber,
-    showSlideNumber,
-    hashOneBasedIndex,
-    hash,
-    respondToHashChanges,
-    history,
-    keyboard,
-    keyboardCondition,
-    disableLayout,
-    overview,
-    center,
-    touch,
-    loop,
-    rtl,
-    navigationMode,
-    shuffle,
-    fragments,
-    fragmentInURL,
-    embedded,
-    help,
-    pause,
-    showNotes,
-    autoPlayMedia,
-    preloadIframes,
-    autoAnimate,
-    autoAnimateMatcher,
-    autoAnimateEasing,
-    autoAnimateDuration,
-    autoAnimateUnmatched,
-    autoAnimateStyles,
-    autoSlide,
-    autoSlideStoppable,
-    autoSlideMethod,
-    defaultTiming,
-    totalTime,
-    mouseWheel,
-    previewLinks,
-    postMessage,
-    postMessageEvents,
-    focusBodyOnPageVisibilityChange,
-    transition,
-    transitionSpeed,
-    backgroundTransition,
-    pdfMaxPagesPerSlide,
-    pdfSeparateFragments,
-    pdfPageHeightOffset,
-    viewDistance,
-    mobileViewDistance,
-    display,
-    hideInactiveCursor,
-    hideCursorTime,
-    parallaxBackgroundImage,
-    parallaxBackgroundRepeat,
-    parallaxBackgroundPosition,
-    parallaxBackgroundSize,
-    parallaxBackgroundHorizontal,
-    parallaxBackgroundVertical,
-    width,
-    height,
-    margin,
-    minScale,
-    maxScale,
-  }), [
-    plugins,
+        controls,
+        controlsTutorial,
+        controlsLayout,
+        controlsBackArrows,
+        progress,
+        slideNumber,
+        showSlideNumber,
+        hashOneBasedIndex,
+        hash,
+        respondToHashChanges,
+        history,
+        keyboard,
+        keyboardCondition,
+        disableLayout,
+        overview,
+        center,
+        touch,
+        loop,
+        rtl,
+        navigationMode,
+        shuffle,
+        fragments,
+        fragmentInURL,
+        embedded,
+        help,
+        pause,
+        showNotes,
+        autoPlayMedia,
+        preloadIframes,
+        autoAnimate,
+        autoAnimateMatcher,
+        autoAnimateEasing,
+        autoAnimateDuration,
+        autoAnimateUnmatched,
+        autoAnimateStyles,
+        autoSlide,
+        autoSlideStoppable,
+        autoSlideMethod,
+        defaultTiming,
+        totalTime,
+        mouseWheel,
+        previewLinks,
+        postMessage,
+        postMessageEvents,
+        focusBodyOnPageVisibilityChange,
+        transition,
+        transitionSpeed,
+        backgroundTransition,
+        pdfMaxPagesPerSlide,
+        pdfSeparateFragments,
+        pdfPageHeightOffset,
+        viewDistance,
+        mobileViewDistance,
+        display,
+        hideInactiveCursor,
+        hideCursorTime,
+        parallaxBackgroundImage,
+        parallaxBackgroundRepeat,
+        parallaxBackgroundPosition,
+        parallaxBackgroundSize,
+        parallaxBackgroundHorizontal,
+        parallaxBackgroundVertical,
+        width,
+        height,
+        margin,
+        minScale,
+        maxScale,
+        ...(pluginProps as any),
+      } as RevealConfig<Plugins>),
+    [
+      plugins,
 
-    controls,
-    controlsTutorial,
-    controlsLayout,
-    controlsBackArrows,
-    progress,
-    slideNumber,
-    showSlideNumber,
-    hashOneBasedIndex,
-    hash,
-    respondToHashChanges,
-    history,
-    keyboard,
-    keyboardCondition,
-    disableLayout,
-    overview,
-    center,
-    touch,
-    loop,
-    rtl,
-    navigationMode,
-    shuffle,
-    fragments,
-    fragmentInURL,
-    embedded,
-    help,
-    pause,
-    showNotes,
-    autoPlayMedia,
-    preloadIframes,
-    autoAnimate,
-    autoAnimateMatcher,
-    autoAnimateEasing,
-    autoAnimateDuration,
-    autoAnimateUnmatched,
-    autoAnimateStyles,
-    autoSlide,
-    autoSlideStoppable,
-    autoSlideMethod,
-    defaultTiming,
-    totalTime,
-    mouseWheel,
-    previewLinks,
-    postMessage,
-    postMessageEvents,
-    focusBodyOnPageVisibilityChange,
-    transition,
-    transitionSpeed,
-    backgroundTransition,
-    pdfMaxPagesPerSlide,
-    pdfSeparateFragments,
-    pdfPageHeightOffset,
-    viewDistance,
-    mobileViewDistance,
-    display,
-    hideInactiveCursor,
-    hideCursorTime,
-    parallaxBackgroundImage,
-    parallaxBackgroundRepeat,
-    parallaxBackgroundPosition,
-    parallaxBackgroundSize,
-    parallaxBackgroundHorizontal,
-    parallaxBackgroundVertical,
-    width,
-    height,
-    margin,
-    minScale,
-    maxScale,
-  ])
+      controls,
+      controlsTutorial,
+      controlsLayout,
+      controlsBackArrows,
+      progress,
+      slideNumber,
+      showSlideNumber,
+      hashOneBasedIndex,
+      hash,
+      respondToHashChanges,
+      history,
+      keyboard,
+      keyboardCondition,
+      disableLayout,
+      overview,
+      center,
+      touch,
+      loop,
+      rtl,
+      navigationMode,
+      shuffle,
+      fragments,
+      fragmentInURL,
+      embedded,
+      help,
+      pause,
+      showNotes,
+      autoPlayMedia,
+      preloadIframes,
+      autoAnimate,
+      autoAnimateMatcher,
+      autoAnimateEasing,
+      autoAnimateDuration,
+      autoAnimateUnmatched,
+      autoAnimateStyles,
+      autoSlide,
+      autoSlideStoppable,
+      autoSlideMethod,
+      defaultTiming,
+      totalTime,
+      mouseWheel,
+      previewLinks,
+      postMessage,
+      postMessageEvents,
+      focusBodyOnPageVisibilityChange,
+      transition,
+      transitionSpeed,
+      backgroundTransition,
+      pdfMaxPagesPerSlide,
+      pdfSeparateFragments,
+      pdfPageHeightOffset,
+      viewDistance,
+      mobileViewDistance,
+      display,
+      hideInactiveCursor,
+      hideCursorTime,
+      parallaxBackgroundImage,
+      parallaxBackgroundRepeat,
+      parallaxBackgroundPosition,
+      parallaxBackgroundSize,
+      parallaxBackgroundHorizontal,
+      parallaxBackgroundVertical,
+      width,
+      height,
+      margin,
+      minScale,
+      maxScale,
+      pluginProps,
+    ],
+  );
   useEffect(() => {
     if (!revealRef?.current) {
       return;
@@ -539,7 +565,10 @@ export default function RevealJS({
     }
     revealDeck.current.initialize(options).then(() => {
       if (revealDeck.current) {
-        setContextValue({ reveal: revealDeck.current });
+        setContextValue({
+          reveal: revealDeck.current,
+          prism: !!revealDeck.current.getPlugin('prism-highlight'),
+        });
         onDeckReady?.(revealDeck.current);
       }
     });
@@ -548,9 +577,7 @@ export default function RevealJS({
   return (
     <div className="reveal" ref={revealRef}>
       <div className="slides">
-        <RevealProvider reveal={revealContext}>
-          {children}
-        </RevealProvider>
+        <RevealProvider reveal={revealContext}>{children}</RevealProvider>
       </div>
     </div>
   );

@@ -9,8 +9,11 @@ export interface BaseProps {
   fitText?: boolean;
 }
 
-export type MakeProps<Interface, T extends keyof ReactHTML> = Interface & BaseProps & SimpleComponentProps<T>[0];
-export type MakeFullProps<T extends keyof ReactHTML> = BaseProps & SimpleComponentProps<T>[0];
+export type MakeProps<Interface, T extends keyof ReactHTML> = Interface &
+  BaseProps &
+  SimpleComponentProps<T>[0];
+export type MakeFullProps<T extends keyof ReactHTML> = BaseProps &
+  SimpleComponentProps<T>[0];
 
 export type SimpleComponent =
   | 'h1'
@@ -32,8 +35,9 @@ export type SimpleComponent =
   | 'span'
   | 'ul';
 
-export type SimpleComponentProps<T extends keyof ReactHTML> =
-  ReactHTML[T] extends DetailedHTMLFactory<infer Attributes, any>
+export type SimpleComponentProps<
+  T extends keyof ReactHTML
+> = ReactHTML[T] extends DetailedHTMLFactory<infer Attributes, any>
   ? [Attributes, Element]
   : never;
 
@@ -43,19 +47,17 @@ export interface RevealProps {
 
 export type Props<T extends keyof ReactHTML> = MakeProps<RevealProps, T>;
 
-export function getClassNameProps(
-  baseProps: BaseProps
-) {
+export function getClassNameProps(baseProps: BaseProps) {
   const { className, fragment, fragmentStyle, fitText, ...props } = baseProps;
   const classes = className ? [className] : [];
-  if (fragment) classes.push("fragment");
-  if (fitText) classes.push("r-fit-text");
+  if (fragment) classes.push('fragment');
+  if (fitText) classes.push('r-fit-text');
   if (fragmentStyle) classes.push(fragmentStyle);
   if (!classes.length) return props;
   return {
     ...props,
     className: classes.join(' '),
-  }
+  };
 }
 
 export function generateBaseComponent<T extends SimpleComponent>(component: T) {

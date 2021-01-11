@@ -1,22 +1,29 @@
-import React, { createContext, ReactNode } from "react";
-import Reveal from "../../types/reveal.js";
+import React, { createContext, ReactNode } from 'react';
+import Reveal, { MightBeRevealPlugin } from '../../types/reveal.js';
 
-export interface RevealContextType {
-  reveal: Reveal | null;
+export interface RevealContextType<Plugins extends MightBeRevealPlugin[]> {
+  reveal: Reveal<Plugins> | null;
+  prism: boolean;
 }
 
-export const defaultContextValue: RevealContextType = { 
+export const defaultContextValue: RevealContextType<MightBeRevealPlugin[]> = {
   reveal: null,
-}
-export const RevealContext = createContext<RevealContextType>(defaultContextValue);
+  prism: false,
+};
+export const RevealContext = createContext<
+  RevealContextType<MightBeRevealPlugin[]>
+>(defaultContextValue);
 
-export interface RevealProviderProps {
-  reveal: RevealContextType;
+export interface RevealProviderProps<Plugins extends MightBeRevealPlugin[]> {
+  reveal: RevealContextType<Plugins>;
   children: ReactNode;
 }
 
-export default function RevealProvider({ reveal, children }: RevealProviderProps) {
-  return (
-    <RevealContext.Provider value={reveal}>{children}</RevealContext.Provider>
-  )
+export default function RevealProvider<Plugins extends MightBeRevealPlugin[]>({
+  reveal,
+  children,
+}: RevealProviderProps<Plugins>) {
+  // coerce the type to the actual reveal/plugin combo it is passed
+  const Context = RevealContext as React.Context<RevealContextType<Plugins>>;
+  return <Context.Provider value={reveal}>{children}</Context.Provider>;
 }

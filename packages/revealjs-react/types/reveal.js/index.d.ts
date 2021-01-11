@@ -15,6 +15,22 @@ export interface RevealSlideSize {
   presentationHeight: number;
 }
 
+export type TransitionAtoms =
+  | 'none'
+  | 'fade'
+  | 'slide'
+  | 'convex'
+  | 'concave'
+  | 'zoom';
+export type TransitionSpeed = 'default' | 'fast' | 'slow';
+export type BackgroundRepeat =
+  | 'repeat'
+  | 'repeat-x'
+  | 'repeat-y'
+  | 'no-repeat'
+  | 'initial'
+  | 'inherit';
+
 export interface RevealDeckState {
   indexh: number;
   indexv: number;
@@ -22,10 +38,11 @@ export interface RevealDeckState {
   overview: boolean;
   paused: boolean;
 }
-export default class Reveal {
-  constructor(rootEl: HTMLDivElement, config: RevealConfig);
-  constructor(config: RevealConfig);
-  slide: (indexh: number, indexv?: number, indexh?: number) => void;
+
+export default class Reveal<Plugins extends MightBeRevealPlugin[]> {
+  constructor(rootEl: HTMLDivElement, config: RevealConfig<Plugins>);
+  constructor(config: RevealConfig<Plugins>);
+  slide: (indexh: number, indexv?: number, indexf?: number) => void;
   left: RevealNavigate;
   right: RevealNavigate;
   up: RevealNavigate;
@@ -38,7 +55,7 @@ export default class Reveal {
   sync: () => void;
   layout: () => void;
   shuffle: () => void;
-  getConfig: () => RevealConfig;
+  getConfig: () => RevealConfig<Plugins>;
   getScale: () => number;
   getState: () => RevealDeckState;
   getComputedSlideSize: () => RevealSlideSize;
@@ -69,20 +86,36 @@ export default class Reveal {
   getRevealElement: () => HTMLElement;
   getSlidesElement: () => HTMLElement;
   getViewportElement: () => HTMLElement;
-  initialize(options?: Partial<Options>);
-  hasPlugin(string): boolean;
-  getPlugin(string): RevealPlugin | null;
-  getPlugins(): RevealPluginList;
+  initialize: (options?: Partial<RevealConfig<Plugins>>) => Promise<void>;
+  hasPlugin: (plugin: string) => boolean;
+  getPlugin: (plugin: string) => RevealPlugin | null;
+  getPlugins: () => RevealPluginList;
 }
-export interface RevealPlugin {
+
+export interface RevealPluginDefinition<PluginExtraConfig = undefined> {
   id: string;
-  init: (reveal: Reveal) => void | Promise<void>;
+  init: <R extends Reveal<RevealPlugin[]>>(reveal: R) => void | Promise<void>;
+  // dummy variable to enable inference
+  ____$$pluginExtension?: PluginExtraConfig;
 }
+
+export type RevealPlugins<
+  Plugins extends MightBeRevealPlugin[]
+> = Plugins extends RevealPluginDefinition<infer PluginConfig>[]
+  ? RevealPlugin<PluginConfig>[]
+  : never;
+export type MightBeRevealPlugin = () => unknown;
+
+export type RevealPlugin<
+  PluginExtraConfig = undefined
+> = () => RevealPluginDefinition<PluginExtraConfig>;
+
 export interface RevealPluginList {
   [pluginName: string]: RevealPlugin;
 }
-export interface RevealConfig {
-  plugins?: RevealPlugin[];
+
+export interface RevealConfigBase<Plugins extends MightBeRevealPlugin[]> {
+  plugins?: RevealPlugins<Plugins>;
 
   controls?: boolean;
   controlsTutorial?: boolean;
@@ -162,3 +195,20 @@ export interface RevealConfig {
   minScale?: number;
   maxScale?: number;
 }
+
+export type NoUndefined<T> = T extends undefined ? never : T;
+
+export type UnionToIntersection<U> = (
+  U extends any ? (k: U) => void : never
+) extends (k: infer I) => void
+  ? I
+  : never;
+export type ExtractPluginExtraConfig<
+  P extends MightBeRevealPlugin[]
+> = P extends RevealPlugin<infer ExtraConfig>[]
+  ? UnionToIntersection<NoUndefined<ExtraConfig>>
+  : never;
+
+export type RevealConfig<
+  Plugins extends MightBeRevealPlugin[]
+> = RevealConfigBase<Plugins> & ExtractPluginExtraConfig<Plugins>;

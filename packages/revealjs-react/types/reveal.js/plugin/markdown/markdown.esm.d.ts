@@ -1,5 +1,5 @@
-import { RevealPlugin } from "../../";
+import { RevealPlugin } from '../../';
 
-const MarkdownPlugin: RevealPlugin
+const MarkdownPlugin: RevealPlugin;
 
 export default MarkdownPlugin;

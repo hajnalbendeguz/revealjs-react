@@ -4,14 +4,14 @@ import './Example.css';
 
 export interface ExampleProps {
   source?: string;
-  language: string;
+  id?: string;
   children: React.ReactNode;
 }
 
 export default function Example({
   source: code = '',
+  id,
   children,
-  language,
 }: ExampleProps) {
   const [selected, setSelected] = useState<'example' | 'source'>('example');
   const show = useCallback(
@@ -30,7 +30,7 @@ export default function Example({
         </a>
       </div>
       <div style={{ display: selected === 'source' ? 'block' : 'none' }}>
-        <Code lineNumbers language={language}>
+        <Code lineNumbers language="tsx" id={id}>
           {{ code }}
         </Code>
         <a href="#example" onClick={(e) => show(e, 'example')}>

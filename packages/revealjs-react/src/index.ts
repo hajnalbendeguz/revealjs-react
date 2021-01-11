@@ -65,19 +65,24 @@ import { RevealContext } from './components/RevealProvider';
 import useReveal from './hooks/useReveal';
 
 // plugins
-import UntypedHighlightPlugin from './plugins/HighlightPlugin';
+import UntypedHighlightPlugin, {
+  HighlightOptions,
+} from './plugins/HighlightPlugin';
 import UntypedMathPlugin from './plugins/MathPlugin';
 import UntypedMarkdownPlugin from './plugins/MarkdownPlugin';
 import UntypedNotesPlugin from './plugins/NotesPlugin';
 import UntypedSearchPlugin from './plugins/SearchPlugin';
 import UntypedZoomPlugin from './plugins/ZoomPlugin';
 
-const HighlightPlugin: RevealPlugin = UntypedHighlightPlugin;
+const HighlightPlugin: RevealPlugin<HighlightOptions> = UntypedHighlightPlugin;
 const MathPlugin: RevealPlugin = UntypedMathPlugin;
 const MarkdownPlugin: RevealPlugin = UntypedMarkdownPlugin;
 const NotesPlugin: RevealPlugin = UntypedNotesPlugin;
 const SearchPlugin: RevealPlugin = UntypedSearchPlugin;
 const ZoomPlugin: RevealPlugin = UntypedZoomPlugin;
+import PrismHighlightPlugin, {
+  PrismOptions,
+} from './plugins/PrismHighlightPlugin';
 
 // types for reveal.js
 import type {
@@ -88,6 +93,8 @@ import type {
   RevealRoutes,
   RevealSlideCoordinates,
   RevealSlideSize,
+  ExtractPluginExtraConfig,
+  RevealPlugins,
 } from '../types/reveal.js';
 import type Reveal from '../types/reveal.js';
 
@@ -122,6 +129,7 @@ export {
   Span,
   Ul,
   Video,
+  PrismHighlightPlugin,
   HighlightPlugin,
   MathPlugin,
   MarkdownPlugin,
@@ -132,6 +140,7 @@ export {
 
 export type {
   RevealPlugin,
+  RevealPlugins,
   RevealPluginList,
   Reveal,
   RevealConfig,
@@ -139,6 +148,9 @@ export type {
   RevealRoutes,
   RevealSlideCoordinates,
   RevealSlideSize,
+  HighlightOptions,
+  PrismOptions,
+  ExtractPluginExtraConfig,
   AudioProps,
   BlockQuoteProps,
   CodeProps,
