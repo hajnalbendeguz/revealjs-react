@@ -82,6 +82,7 @@ const SearchPlugin: RevealPlugin = UntypedSearchPlugin;
 const ZoomPlugin: RevealPlugin = UntypedZoomPlugin;
 import PrismHighlightPlugin, {
   addCustomPrismLanguage,
+  enablePrismLineNumbers,
 } from './plugins/PrismHighlightPlugin';
 import type {
   CustomPrismHighlightPlugin,
@@ -107,6 +108,7 @@ import type {
 import type Reveal from '../types/reveal.js';
 
 export {
+  enablePrismLineNumbers,
   useReveal,
   RevealContext,
   Audio,

@@ -9,8 +9,13 @@ import './PrismHighlightPlugin/PrismHighlight.css';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-typescript';
+import plugin from '../prismjs-line-numbers';
 
 window.Prism = Prism;
+
+export function enablePrismLineNumbers() {
+  plugin(Prism);
+}
 
 export interface PrismOptions<
   CustomLanguages extends string = PrismLanguages,
