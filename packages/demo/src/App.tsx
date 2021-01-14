@@ -5,14 +5,15 @@ import {
   PrismHighlightPlugin,
   NotesPlugin,
   Code,
+  enablePrismLineNumbers,
 } from '@gregcello/revealjs-react';
 import { Example } from '@gregcello/revealjs-react/example.macro';
 import 'reveal.js/dist/theme/moon.css';
 import 'prismjs/themes/prism-tomorrow.css';
-import 'prismjs/plugins/line-numbers/prism-line-numbers';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/plugins/line-highlight/prism-line-highlight';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
+enablePrismLineNumbers();
 
 const plugins = [PrismHighlightPlugin, NotesPlugin];
 
