@@ -85,8 +85,6 @@ function Video({
   return (
     <video
       {...getClassNameProps(props)}
-      data-id={id}
-      id={id}
       data-autoplay={autoplay}
       src={lazy ? '' : src}
       data-src={lazy ? src : false}
