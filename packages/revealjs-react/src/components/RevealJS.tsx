@@ -7,8 +7,7 @@ import {
   MightBeRevealPlugin,
 } from '../../types/reveal.js/index';
 
-// Styles
-import 'reveal.js/dist/reveal.css';
+// Styles - reveal.css needs to be imported from the application
 import { BackgroundRepeat, TransitionAtoms, TransitionSpeed } from '../types';
 import RevealProvider, {
   defaultContextValue,
