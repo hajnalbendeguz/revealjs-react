@@ -574,7 +574,7 @@ export default function RevealJS<
         onDeckReady?.(revealDeck.current);
       }
     });
-  }, [revealRef, options]);
+  }, [revealRef, options, children]);
 
   return (
     <div className="reveal" ref={revealRef}>
