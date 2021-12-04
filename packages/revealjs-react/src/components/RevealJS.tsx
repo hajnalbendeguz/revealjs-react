@@ -582,15 +582,14 @@ export default function RevealJS<
   }, [revealRef, options]);
 
   useLayoutEffect(() => {
-    if (!revealDeck?.current) {
+    if (!revealRef?.current || !revealDeck?.current) {
       return;
     }
 
     if(isInitialized){
       revealDeck.current.sync()
     }
-    
-  }, [revealDeck, children, isInitialized]);
+  }, [revealRef, revealDeck, children, isInitialized]);
 
   return (
     <div className="reveal" ref={revealRef}>
