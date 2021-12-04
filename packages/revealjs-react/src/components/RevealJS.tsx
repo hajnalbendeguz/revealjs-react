@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Reveal from 'reveal.js';
 import {
   ExtractPluginExtraConfig,
@@ -581,7 +581,7 @@ export default function RevealJS<
     });
   }, [revealRef, options]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!revealRef?.current || !revealDeck?.current) {
       return;
     }
