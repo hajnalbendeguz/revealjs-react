@@ -558,6 +558,8 @@ export default function RevealJS<
       pluginProps,
     ],
   );
+  const [isInitialized, setIsInitialized] = useState(false)
+
   useEffect(() => {
     if (!revealRef?.current) {
       return;
@@ -565,6 +567,8 @@ export default function RevealJS<
     if (!revealDeck.current) {
       revealDeck.current = new Reveal(revealRef.current, options);
     }
+  
+    setIsInitialized(false)
     revealDeck.current.initialize(options).then(() => {
       if (revealDeck.current) {
         setContextValue({
@@ -573,6 +577,7 @@ export default function RevealJS<
         });
         onDeckReady?.(revealDeck.current);
       }
+      setIsInitialized(true)
     });
   }, [revealRef, options]);
 
@@ -581,9 +586,11 @@ export default function RevealJS<
       return;
     }
 
-    revealDeck.current.sync()
+    if(isInitialized){
+      revealDeck.current.sync()
+    }
     
-  }, [revealDeck, children]);
+  }, [revealDeck, children, isInitialized]);
 
   return (
     <div className="reveal" ref={revealRef}>

@@ -1,6 +1,6 @@
 {
   "name": "@gregcello/revealjs-react",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "description": "A React wrapper for the RevealJS Presentation Library.",
   "keywords": [
     "React",
