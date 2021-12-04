@@ -573,8 +573,15 @@ export default function RevealJS<
         });
         onDeckReady?.(revealDeck.current);
       }
-    });
-  }, [revealRef, options, children]);
+    });    
+  }, [revealRef, options]);
+
+  useEffect(() => {
+    if (!revealDeck.current) {
+      return
+    }
+    revealDeck.current.sync()
+  },[children, revealDeck.current])
 
   return (
     <div className="reveal" ref={revealRef}>
