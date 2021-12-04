@@ -577,7 +577,7 @@ export default function RevealJS<
   }, [revealRef, options]);
 
   useEffect(() => {
-    if (!revealDeck.current || !children) {
+    if (!revealDeck.current || !children || (Array.isArray(children) && !children.length)) {
       return
     }
     revealDeck.current.sync()
